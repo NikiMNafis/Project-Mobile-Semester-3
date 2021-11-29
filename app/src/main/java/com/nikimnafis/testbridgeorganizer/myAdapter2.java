@@ -41,7 +41,7 @@ public class myAdapter2 extends FirebaseRecyclerAdapter<model, myAdapter2.myView
         ImageView imgAnggota;
         TextView txtNama, txtStatus;
 
-        public myViewHolder(@NonNull @NotNull View itemView) {
+        public myViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imgAnggota = itemView.findViewById(R.id.img_anggota);
