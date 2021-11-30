@@ -12,12 +12,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText inputNama, inputNoTelp, inputEmail, inputPassword, inputUlangPassword;
     boolean passwordVisible;
     private ImageButton buttonBack, buttonDaftar;
+
+    FirebaseDatabase rootNode;
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +110,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     !validasiUlangPassword()) {
                     return;
                 }
-                startActivity(new Intent(this, MainActivity.class));
+
+                rootNode = FirebaseDatabase.getInstance();
+                reference = rootNode.getReference("user");
+
+                String nama = inputNama.getEditableText().toString();
+                String noTelp = inputNoTelp.getEditableText().toString();
+                String email = inputEmail.getEditableText().toString();
+                String password = inputPassword.getEditableText().toString();
+
+                UserHelper helperClass = new UserHelper(nama, noTelp, email, password);
+
+                reference.child(noTelp).setValue(helperClass);
+
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
         }
     }
@@ -181,10 +199,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (val.isEmpty()) {
             inputUlangPassword.setError("Form harus diisi");
             return false;
-        }  else if (val != val2) {
-            inputUlangPassword.setError("Kata sandi tidak sama");
-            return false;
-        } else {
+        }
+//        else if (val != val2) {
+//            inputUlangPassword.setError("Kata sandi tidak sama");
+//            return false;
+//        }
+        else {
             inputUlangPassword.setError(null);
             return true;
         }

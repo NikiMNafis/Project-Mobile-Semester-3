@@ -1,7 +1,9 @@
 package com.nikimnafis.testbridgeorganizer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -11,6 +13,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -76,6 +87,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (!validasiEmail() | !validasiPassword()) {
                     return;
                 }
+
+                String email = inputEmail.getEditableText().toString().trim();
+                String password = inputPassword.getEditableText().toString().trim();
+
+                Query cekUser = FirebaseDatabase.getInstance().getReference("user").orderByChild("email").equalTo(email);
+
+                cekUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            inputEmail.setError(null);
+
+                            String systemPassword = snapshot.child("").child("password").getValue(String.class);
+                            if (systemPassword.equals(inputPassword)) {
+                                inputPassword.setError(null);
+
+                                String nama = snapshot.child("").child("nama").getValue(String.class);
+
+                                Toast.makeText(LoginActivity.this, "Selamat Datang" + nama, Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Password Salah", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Akun tidak ada", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(LoginActivity.this, "Database error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 startActivity(new Intent(this,MainActivity.class));
                 break;
             case R.id.btn_lupa_pass:
