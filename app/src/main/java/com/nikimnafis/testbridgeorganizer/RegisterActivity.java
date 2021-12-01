@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
@@ -120,8 +121,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 String password = inputPassword.getEditableText().toString();
 
                 UserHelper helperClass = new UserHelper(nama, noTelp, email, password);
-
                 reference.child(noTelp).setValue(helperClass);
+
+                Toast.makeText(RegisterActivity.this, "Registrasi berhasil", Toast.LENGTH_SHORT).show();
 
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
@@ -199,17 +201,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (val.isEmpty()) {
             inputUlangPassword.setError("Form harus diisi");
             return false;
-        }
-//        else if (val != val2) {
-//            inputUlangPassword.setError("Kata sandi tidak sama");
-//            return false;
-//        }
-        else {
+        } else if (!val.equals(val2)) {
+            inputUlangPassword.setError("Kata sandi tidak sama");
+            return false;
+        } else {
             inputUlangPassword.setError(null);
             return true;
         }
     }
-
-
 
 }
