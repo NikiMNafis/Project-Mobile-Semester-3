@@ -28,20 +28,22 @@
             />
 
         <ImageView
-            android:id="@+id/img_chat"
+            android:id="@+id/btn_chat"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/chat"
-            android:layout_toLeftOf="@+id/img_akun"
+            android:layout_toLeftOf="@+id/btn_akun"
             android:layout_marginRight="10dp"
+            android:onClick="onClick"
             />
 
         <ImageView
-            android:id="@+id/img_akun"
+            android:id="@+id/btn_akun"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/person2"
             android:layout_alignParentRight="true"
+            android:onClick="onClick"
             />
 
     </RelativeLayout>

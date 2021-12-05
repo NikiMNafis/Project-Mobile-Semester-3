@@ -4,19 +4,29 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     BottomNavigationView navigationView;
+    ImageView btnChat, btnAkun;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        btnChat = findViewById(R.id.btn_chat);
+        btnAkun = findViewById(R.id.btn_akun);
+
+        btnChat.setOnClickListener(this);
+        btnAkun.setOnClickListener(this);
 
         navigationView = findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.body_container, new ProjectFragment()).commit();
@@ -43,4 +53,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onClick(View view) {
+        int id = view.getId();
+
+        switch (id) {
+            case R.id.btn_chat:
+                startActivity(new Intent(this, ChatActivity.class));
+                break;
+        }
+    }
+
 }
