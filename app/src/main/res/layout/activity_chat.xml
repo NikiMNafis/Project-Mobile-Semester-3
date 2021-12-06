@@ -1,45 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ChatActivity"
-    android:padding="25dp"
     android:background="@color/white"
-    android:layout_gravity="center_horizontal"
     >
 
     <RelativeLayout
+        android:padding="25dp"
+        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
         >
-        <!--View Group Line-->
-        <LinearLayout
-            android:id="@+id/lineGroup"
-            android:layout_width="360dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="0dp"
-            android:gravity="center">
 
-    <!--Button Back-->
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@drawable/arrowleft"
-            android:onClick="onClick"
-            android:layout_gravity="left"
-            />
     <!--View Group Edit Text-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
             android:gravity="center"
             >
 
@@ -51,6 +33,7 @@
                 android:textSize="28sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/lato_bold"
+                android:layout_marginTop="80dp"
                 />
 
             <TextView
@@ -64,32 +47,62 @@
                 android:fontFamily="@font/lato_regular"
                 />
 
-            <!--Edit Text Email-->
-            <androidx.appcompat.widget.AppCompatEditText
+        <!--Edit Text Email-->
+            <EditText
                 android:id="@+id/inp_chat"
-                android:inputType="textShortMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:layout_width="320dp"
+                android:layout_height="100dp"
+                android:padding="5dp"
+                android:maxLines="10"
+                android:gravity="top"
                 android:textSize="16sp"
                 android:background="@drawable/custom_input"
                 android:hint="Isi pesan"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray"
-                android:layout_marginTop="102dp"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/text2"
                 />
-            <!--Button Masuk-->
-            <ImageButton
-                android:id="@+id/btn_masuk"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/circle_arrow_white"
-                android:layout_below="@+id/inp_chat"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:onClick="onClick"
-                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            >
+            <!--View Group Line-->
+            <RelativeLayout
+                android:id="@+id/lineGroup"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="0dp">
+
+                <!--Button Back-->
+                <ImageButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/arrowleft"
+                    android:onClick="onClick"
+                    android:layout_gravity="left"
+                    />
+
+                <!--Button Kirim-->
+                <ImageButton
+                    android:id="@+id/btn_kirim"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/circle_arrow_white"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="280dp"
+                    android:onClick="onClick"
+                    />
             </RelativeLayout>
-        </LinearLayout>
+        </RelativeLayout>
+
     </RelativeLayout>
 
-</RelativeLayout>
+</ScrollView>

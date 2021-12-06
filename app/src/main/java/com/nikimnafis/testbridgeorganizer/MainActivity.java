@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         fragment = new PriceListFragment();
                         break;
                     case R.id.nav_anggota:
-                        fragment = new AnggotaFragment();
+                        fragment = new CrewFragment();
                         break;
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();

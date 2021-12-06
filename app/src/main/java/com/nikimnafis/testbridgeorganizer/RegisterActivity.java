@@ -1,20 +1,31 @@
 package com.nikimnafis.testbridgeorganizer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -22,8 +33,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     boolean passwordVisible;
     private ImageButton buttonBack, buttonDaftar;
 
-    FirebaseDatabase rootNode;
-    DatabaseReference reference;
+    private FirebaseDatabase rootNode;
+    private DatabaseReference reference;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,20 +125,49 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     return;
                 }
 
-                rootNode = FirebaseDatabase.getInstance();
-                reference = rootNode.getReference("user");
+                String nama = inputNama.getEditableText().toString().trim();
+                String noTelp = inputNoTelp.getEditableText().toString().trim();
+                String email = inputEmail.getEditableText().toString().trim();
+                String password = inputPassword.getEditableText().toString().trim();
 
-                String nama = inputNama.getEditableText().toString();
-                String noTelp = inputNoTelp.getEditableText().toString();
-                String email = inputEmail.getEditableText().toString();
-                String password = inputPassword.getEditableText().toString();
+                mAuth = FirebaseAuth.getInstance();
 
-                UserHelper helperClass = new UserHelper(nama, noTelp, email, password);
-                reference.child(noTelp).setValue(helperClass);
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                    UserRegister user = new UserRegister(nama, noTelp, email);
 
-                Toast.makeText(RegisterActivity.this, "Registrasi berhasil", Toast.LENGTH_SHORT).show();
+                                    FirebaseDatabase.getInstance().getReference("users")
+                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
 
-                startActivity(new Intent(this, LoginActivity.class));
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(RegisterActivity.this, "Registrasi berhasil", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(RegisterActivity.this, "Registrasi gagal, coba ulang kembali", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(RegisterActivity.this, "Registrasi gagal, coba ulang kembali", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+//                rootNode = FirebaseDatabase.getInstance();
+//                reference = rootNode.getReference("user");
+
+//                UserHelper helperClass = new UserHelper(nama, noTelp, email, password);
+//                reference.child(noTelp).setValue(helperClass);
+
+//                Toast.makeText(RegisterActivity.this, "Registrasi berhasil", Toast.LENGTH_SHORT).show();
+
+//                startActivity(new Intent(this, LoginActivity.class));
                 break;
         }
     }
@@ -158,12 +200,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
     public Boolean validasiEmail() {
         String val = inputEmail.getEditableText().toString();
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+//        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
         if (val.isEmpty()) {
             inputEmail.setError("Form harus diisi");
             return false;
-        } else if (!val.matches(emailPattern)) {
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(val).matches()) {
             inputEmail.setError("Alamat email salah");
             return false;
         } else {

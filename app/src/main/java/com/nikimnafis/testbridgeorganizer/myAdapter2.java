@@ -13,8 +13,6 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
-import org.jetbrains.annotations.NotNull;
-
 public class myAdapter2 extends FirebaseRecyclerAdapter<model, myAdapter2.myViewHolder> {
 
     public myAdapter2( @NonNull FirebaseRecyclerOptions<model> options) {
@@ -25,6 +23,7 @@ public class myAdapter2 extends FirebaseRecyclerAdapter<model, myAdapter2.myView
     protected void onBindViewHolder(@NonNull myViewHolder holder, int position, @NonNull model model) {
         holder.txtNama.setText(model.getNama());
         holder.txtStatus.setText(model.getStatus());
+//        holder.imgAnggota.setImageResource(Integer.parseInt(model.getGurl()));
         Glide.with(holder.imgAnggota.getContext()).load(model.getGurl()).into(holder.imgAnggota);
     }
 

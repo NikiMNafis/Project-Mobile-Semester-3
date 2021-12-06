@@ -15,6 +15,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -30,6 +34,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView buttonDaftar, buttonLupaPassword;
     private ImageButton buttonMasuk;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +43,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         inputEmail = findViewById(R.id.inp_email);
         inputPassword = findViewById(R.id.inp_pass);
+
+        mAuth = FirebaseAuth.getInstance();
 
         buttonDaftar = findViewById(R.id.btn_daftar);
         buttonMasuk = findViewById(R.id.btn_masuk);
@@ -84,44 +92,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(this, RegisterActivity.class));
                 break;
             case R.id.btn_masuk:
-                if (!validasiEmail() | !validasiPassword()) {
-                    return;
-                }
+//                if (!validasiEmail() | !validasiPassword()) {
+//                    return;
+//                }
 
-                String email = inputEmail.getEditableText().toString().trim();
-                String password = inputPassword.getEditableText().toString().trim();
+                userLogin();
 
-                Query cekUser = FirebaseDatabase.getInstance().getReference("user").orderByChild("email").equalTo(email);
+//                String email = inputEmail.getEditableText().toString().trim();
+//                String password = inputPassword.getEditableText().toString().trim();
 
-                cekUser.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            inputEmail.setError(null);
+//                Query cekUser = FirebaseDatabase.getInstance().getReference("user").orderByChild("email").equalTo(email);
+//
+//                cekUser.addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        if (snapshot.exists()) {
+//                            inputEmail.setError(null);
+//                            String systemPassword = snapshot.child("").child("password").getValue(String.class);
+//                            if (systemPassword.equals(inputPassword)) {
+//                                inputPassword.setError(null);
+//                                String nama = snapshot.child("").child("nama").getValue(String.class);
+//                                Toast.makeText(LoginActivity.this, "Selamat Datang" + nama, Toast.LENGTH_SHORT).show();
+//                            } else {
+//                                Toast.makeText(LoginActivity.this, "Password Salah", Toast.LENGTH_SHORT).show();
+//                            }
+//                        } else {
+//                            Toast.makeText(LoginActivity.this, "Akun tidak ada", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//                        Toast.makeText(LoginActivity.this, "Database error", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
 
-                            String systemPassword = snapshot.child("").child("password").getValue(String.class);
-                            if (systemPassword.equals(inputPassword)) {
-                                inputPassword.setError(null);
-
-                                String nama = snapshot.child("").child("nama").getValue(String.class);
-
-                                Toast.makeText(LoginActivity.this, "Selamat Datang" + nama, Toast.LENGTH_SHORT).show();
-
-                            } else {
-                                Toast.makeText(LoginActivity.this, "Password Salah", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Akun tidak ada", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(LoginActivity.this, "Database error", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                startActivity(new Intent(this,MainActivity.class));
+//                startActivity(new Intent(this,MainActivity.class));
                 break;
             case R.id.btn_lupa_pass:
                 startActivity(new Intent(this, LupaPasswordActivity.class));
@@ -129,7 +134,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-//    Validasi input data
+    private void userLogin() {
+        if (!validasiEmail() | !validasiPassword()) {
+            return;
+        }
+
+        String email = inputEmail.getEditableText().toString().trim();
+        String password = inputPassword.getEditableText().toString().trim();
+
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    Toast.makeText(LoginActivity.this, "Login berhasil", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Gagal login, silahkan coba lagi", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    //    Validasi input data
     public Boolean validasiEmail() {
         String val = inputEmail.getEditableText().toString();
 

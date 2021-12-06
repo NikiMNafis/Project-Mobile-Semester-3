@@ -5,7 +5,6 @@ public class UserHelper {
     String nama, noTelp, email, password;
 
     public UserHelper() {
-
     }
 
     public UserHelper(String nama, String noTelp, String email, String password) {
