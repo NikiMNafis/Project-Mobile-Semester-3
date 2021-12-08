@@ -120,57 +120,68 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.btn_daftar:
-                if (!validasiNama() | !validasiNoTelp() | !validasiEmail() | !validasiPassword() |
-                    !validasiUlangPassword()) {
-                    return;
-                }
-
-                String nama = inputNama.getEditableText().toString().trim();
-                String noTelp = inputNoTelp.getEditableText().toString().trim();
-                String email = inputEmail.getEditableText().toString().trim();
-                String password = inputPassword.getEditableText().toString().trim();
-
-                mAuth = FirebaseAuth.getInstance();
-
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                                    UserRegister user = new UserRegister(nama, noTelp, email);
-
-                                    FirebaseDatabase.getInstance().getReference("users")
-                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-
-                                            if (task.isSuccessful()) {
-                                                Toast.makeText(RegisterActivity.this, "Registrasi berhasil", Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                Toast.makeText(RegisterActivity.this, "Registrasi gagal, coba ulang kembali", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                                } else {
-                                    Toast.makeText(RegisterActivity.this, "Registrasi gagal, coba ulang kembali", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-
-//                rootNode = FirebaseDatabase.getInstance();
-//                reference = rootNode.getReference("user");
-
-//                UserHelper helperClass = new UserHelper(nama, noTelp, email, password);
-//                reference.child(noTelp).setValue(helperClass);
-
-//                Toast.makeText(RegisterActivity.this, "Registrasi berhasil", Toast.LENGTH_SHORT).show();
+                userRegister();
+                UserData();
 
 //                startActivity(new Intent(this, LoginActivity.class));
                 break;
         }
     }
+
+    private void userRegister() {
+        if (!validasiNama() | !validasiNoTelp() | !validasiEmail() | !validasiPassword() |
+                !validasiUlangPassword()) {
+            return;
+        }
+
+        String nama = inputNama.getEditableText().toString().trim();
+        String noTelp = inputNoTelp.getEditableText().toString().trim();
+        String email = inputEmail.getEditableText().toString().trim();
+        String password = inputPassword.getEditableText().toString().trim();
+
+        mAuth = FirebaseAuth.getInstance();
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                            UserRegister user = new UserRegister(nama, noTelp, email);
+
+                            FirebaseDatabase.getInstance().getReference("users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(RegisterActivity.this, "Registrasi berhasil", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(RegisterActivity.this, "Registrasi gagal, coba ulang kembali", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "Registrasi gagal, coba ulang kembali", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void UserData() {
+        String nama = inputNama.getEditableText().toString().trim();
+        String noTelp = inputNoTelp.getEditableText().toString().trim();
+        String email = inputEmail.getEditableText().toString().trim();
+        String password = inputPassword.getEditableText().toString().trim();
+
+        rootNode = FirebaseDatabase.getInstance();
+        reference = rootNode.getReference("user");
+
+        UserHelper helperClass = new UserHelper(nama, noTelp, email, password);
+        reference.child(password).setValue(helperClass);
+    }
+
 
     // Validasi Input Data
     public Boolean validasiNama() {
