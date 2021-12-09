@@ -32,13 +32,13 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/chat"
-            android:layout_toLeftOf="@+id/btn_akun"
+            android:layout_toLeftOf="@+id/btn_setting"
             android:layout_marginRight="10dp"
             android:onClick="onClick"
             />
 
         <ImageView
-            android:id="@+id/btn_akun"
+            android:id="@+id/btn_setting"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/person2"
@@ -63,11 +63,11 @@
                 android:id="@+id/txt_nama_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:text="Nama"
                 android:textColor="@color/white"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginRight="15dp"/>
         </RelativeLayout>
 

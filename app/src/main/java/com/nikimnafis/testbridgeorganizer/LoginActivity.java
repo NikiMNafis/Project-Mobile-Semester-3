@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +38,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ImageButton buttonMasuk;
 
     private FirebaseAuth mAuth;
+    private FirebaseUser user;
+    private DatabaseReference reference;
+
+    private String userID;
 
     SharedPreferences sharedPreferences;
 
@@ -97,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_masuk:
                 userLogin();
-                userData();
+//                userData();
 
 //                String email = inputEmail.getEditableText().toString().trim();
 //                String password = inputPassword.getEditableText().toString().trim();
@@ -155,35 +160,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void userData() {
-        String email = inputEmail.getEditableText().toString().trim();
-        String password = inputPassword.getEditableText().toString().trim();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("users");
+        userID = user.getUid();
 
-        Query cekUser = FirebaseDatabase.getInstance().getReference("user").orderByChild("password").equalTo(password);
-        cekUser.addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    inputEmail.setError(null);
-                    String namaUser = snapshot.child("password").child("nama").getValue(String.class);
-                    String emailUser = snapshot.child("password").child("email").getValue(String.class);
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                UserRegister userProfile = snapshot.getValue(UserRegister.class);
+
+                if (userProfile != null) {
+                    String namaUser = userProfile.nama;
+                    String noTelpUser = userProfile.noTelp;
+                    String emailUser = userProfile.email;
 
                     SharedPreferences sharedPreferences = getSharedPreferences("logindata", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("loginstatus", true);
                     editor.putString("namauser", namaUser);
+                    editor.putString("notelpuser", noTelpUser);
                     editor.putString("emailuser", emailUser);
                     editor.commit();
                     editor.apply();
                     finish();
-                } else {
-                    Toast.makeText(LoginActivity.this, "Database error", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
                 Toast.makeText(LoginActivity.this, "Database error", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     //    Validasi input data
