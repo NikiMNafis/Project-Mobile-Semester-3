@@ -6,7 +6,7 @@
     tools:context=".CrewFragment"
     android:layout_marginTop="55dp"
     android:layout_above="@+id/bottom_navigation"
-    android:background="@android:color/transparent"
+    android:background="@drawable/round_corner_background"
     >
 
     <RelativeLayout

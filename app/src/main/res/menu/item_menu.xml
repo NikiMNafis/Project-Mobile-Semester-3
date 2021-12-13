@@ -13,5 +13,9 @@
         android:title="Anggota"
         android:icon="@drawable/group_person2" />
 
+    <item android:id="@+id/nav_profile"
+        android:title="Profile"
+        android:icon="@drawable/profile" />
+
 
 </menu>

@@ -1,7 +1,10 @@
 package com.nikimnafis.testbridgeorganizer;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     BottomNavigationView navigationView;
-    ImageView btnChat, btnSetting;
+    ImageView btnChat;
     TextView txtNamaUser;
 
     private FirebaseUser user;
@@ -41,11 +45,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         btnChat = findViewById(R.id.btn_chat);
-        btnSetting = findViewById(R.id.btn_setting);
         txtNamaUser = findViewById(R.id.txt_nama_user);
 
         btnChat.setOnClickListener(this);
-        btnSetting.setOnClickListener(this);
+
 
         navigationView = findViewById(R.id.bottom_navigation);
         getSupportFragmentManager().beginTransaction().replace(R.id.body_container, new ProjectFragment()).commit();
@@ -64,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     case R.id.nav_anggota:
                         fragment = new CrewFragment();
+                        break;
+                    case R.id.nav_profile:
+                        fragment = new ProfileFragment();
                         break;
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
@@ -104,10 +110,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_chat:
                 startActivity(new Intent(this, ChatActivity.class));
                 break;
-            case R.id.btn_setting:
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(this, LoginActivity.class));
-                break;
+//            case R.id.btn_more_menu:
+//                FirebaseAuth.getInstance().signOut();
+//                startActivity(new Intent(this, LoginActivity.class));
+//                break;
         }
     }
 
