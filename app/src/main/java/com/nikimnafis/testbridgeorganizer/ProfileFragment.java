@@ -1,13 +1,16 @@
 package com.nikimnafis.testbridgeorganizer;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,6 +44,10 @@ public class ProfileFragment extends Fragment {
 
     private String userID;
 
+    TextView txtNamaUser, txtEmailUser;
+
+    private AppCompatButton btnViewAkun;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -71,19 +78,42 @@ public class ProfileFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        btnViewAkun = view.findViewById(R.id.btn_view_akun);
+        btnViewAkun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), AccountActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        txtNamaUser = view.findViewById(R.id.txt_nama_user);
+        txtEmailUser = view.findViewById(R.id.txt_email_user);
+
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("users");
         userID = user.getUid();
 
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserRegister userProfile = snapshot.getValue(UserRegister.class);
 
                 if (userProfile != null) {
                     String namaUser = userProfile.nama;
                     String noTelpUser = userProfile.noTelp;
                     String emailUser = userProfile.email;
+
+                    txtNamaUser.setText(namaUser);
+                    txtEmailUser.setText(emailUser);
 
                 }
             }
@@ -93,12 +123,7 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return view;
     }
 }

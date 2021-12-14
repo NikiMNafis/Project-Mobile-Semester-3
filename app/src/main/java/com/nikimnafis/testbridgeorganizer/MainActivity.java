@@ -91,8 +91,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String namaUser = userProfile.nama;
                     String noTelpUser = userProfile.noTelp;
                     String emailUser = userProfile.email;
-
-                    txtNamaUser.setText(namaUser);
                 }
             }
 

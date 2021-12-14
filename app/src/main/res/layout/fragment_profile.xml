@@ -6,7 +6,7 @@
     tools:context=".ProfileFragment"
     android:layout_marginTop="55dp"
     android:layout_above="@+id/bottom_navigation"
-    android:background="@drawable/round_corner_background_profile"
+    android:background="@drawable/round_corner_background"
     >
 
     <RelativeLayout
@@ -16,8 +16,8 @@
             android:id="@+id/txt_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Profile"
-            android:textColor="@color/black"
+            android:text="Profil"
+            android:textColor="@color/white"
             android:fontFamily="@font/lato_regular"
             android:textSize="18sp"
             android:layout_marginTop="5dp"
@@ -38,7 +38,8 @@
                 android:text="Nama"
                 android:textSize="20sp"
                 android:fontFamily="@font/lato_regular"
-                android:textColor="@color/black"/>
+                android:textColor="@color/white"
+                android:layout_marginLeft="5dp"/>
 
             <TextView
                 android:id="@+id/txt_email_user"
@@ -47,36 +48,70 @@
                 android:text="Email"
                 android:textSize="18sp"
                 android:fontFamily="@font/lato_regular"
-                android:textColor="@color/black"
-                android:layout_marginTop="5dp"/>
+                android:textColor="@color/white"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_view_akun"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:textAlignment="gravity"
+                android:gravity="start"
+                android:padding="16dp"
+                android:textSize="15sp"
+                android:textColor="@android:color/black"
                 android:text="Akun"
-                android:background="@drawable/round_corner"
-                android:layout_marginTop="10dp"
-                android:drawableRight="@drawable/profile"
-
+                android:background="@drawable/button_profile_background"
+                android:textAllCaps="false"
+                android:drawableRight="@drawable/next_24"
                 />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Akun"
-                android:background="@drawable/round_corner"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
+                android:textAlignment="gravity"
+                android:gravity="start"
+                android:padding="16dp"
+                android:textSize="15sp"
+                android:textColor="@android:color/black"
+                android:text="Ubah Password"
+                android:background="@drawable/button_profile_background"
+                android:textAllCaps="false"
+                android:drawableRight="@drawable/next_24"
                 />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Akun"
-                android:background="@drawable/round_corner"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
+                android:textAlignment="gravity"
+                android:gravity="start"
+                android:padding="16dp"
+                android:textSize="15sp"
+                android:textColor="@android:color/black"
+                android:text="Sosial Media Kami"
+                android:background="@drawable/button_profile_background"
+                android:textAllCaps="false"
+                android:drawableRight="@drawable/next_24"
                 />
 
-
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textAlignment="gravity"
+                android:gravity="start"
+                android:padding="16dp"
+                android:textSize="15sp"
+                android:textColor="@android:color/black"
+                android:text="About"
+                android:background="@drawable/button_profile_background"
+                android:textAllCaps="false"
+                android:drawableRight="@drawable/next_24"
+                />
 
         </LinearLayout>
 
