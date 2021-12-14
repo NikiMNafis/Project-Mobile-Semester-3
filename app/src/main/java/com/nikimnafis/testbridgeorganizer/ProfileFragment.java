@@ -114,7 +114,6 @@ public class ProfileFragment extends Fragment {
 
                     txtNamaUser.setText(namaUser);
                     txtEmailUser.setText(emailUser);
-
                 }
             }
 
