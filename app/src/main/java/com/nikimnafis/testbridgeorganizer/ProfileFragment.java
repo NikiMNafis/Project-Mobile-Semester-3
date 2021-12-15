@@ -46,7 +46,7 @@ public class ProfileFragment extends Fragment {
 
     TextView txtNamaUser, txtEmailUser;
 
-    private AppCompatButton btnViewAkun;
+    private AppCompatButton btnViewAkun, btnChangePass;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -91,6 +91,15 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AccountActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnChangePass = view.findViewById(R.id.btn_change_pass);
+        btnChangePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
                 startActivity(intent);
             }
         });

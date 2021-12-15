@@ -110,6 +110,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 return false;
             }
         });
+
     }
 
     public void onClick(View view) {
