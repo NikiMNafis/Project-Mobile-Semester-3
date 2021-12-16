@@ -28,6 +28,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/txt_1"
             android:padding="15dp"
+            tools:listitem="@layout/data_anggota"
             />
 
     </RelativeLayout>

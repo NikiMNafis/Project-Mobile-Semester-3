@@ -51,7 +51,7 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.ViewHolder> {
         TextView namaCrew, statusCrew;
         ImageView imgCrew;
 
-        public ViewHolder(@NonNull @NotNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             namaCrew = itemView.findViewById(R.id.txt_nama_crew);

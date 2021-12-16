@@ -1,5 +1,6 @@
 package com.nikimnafis.testbridgeorganizer;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +29,15 @@ public class ProjectFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    GridView gridView;
+
+    String[] namaProject = {"Event Party", "Graduation", "School Party", "Wedding Stage",
+                        "Event Party", "Graduation", "School Party", "Wedding Stage"};
+    int[] imageProject = {R.drawable.eventparty, R.drawable.graduation, R.drawable.schoolparty, R.drawable.weddingstage,
+                        R.drawable.eventparty, R.drawable.graduation, R.drawable.schoolparty, R.drawable.weddingstage};
+    int[] detailProject = {R.string.lorem, R.string.lorem, R.string.lorem, R.string.lorem,
+                        R.string.lorem, R.string.lorem, R.string.lorem, R.string.lorem};
 
     public ProjectFragment() {
         // Required empty public constructor
@@ -59,6 +74,72 @@ public class ProjectFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_project, container, false);
+        View view = inflater.inflate(R.layout.fragment_project, container, false);
+
+        gridView = view.findViewById(R.id.gridViewProject);
+
+        CustomAdapter customAdapter = new CustomAdapter(namaProject, imageProject, detailProject, this);
+
+        gridView.setAdapter(customAdapter);
+
+        return view;
+    }
+
+    public class CustomAdapter extends BaseAdapter {
+
+        private String[] namaProject;
+        private int[] imageProject;
+        private int[] detailProject;
+//        private Context context;
+        private LayoutInflater layoutInflater;
+        private ProjectFragment projectFragment;
+
+//        public CustomAdapter(String[] namaProject, int[] imageProject, Context context) {
+//            this.namaProject = namaProject;
+//            this.imageProject = imageProject;
+//            this.context = context;
+//            this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        }
+
+        public CustomAdapter(String[] namaProject, int[] imageProject, int[] detailProject, ProjectFragment projectFragment) {
+            this.namaProject = namaProject;
+            this.imageProject = imageProject;
+            this.detailProject = detailProject;
+            this.projectFragment = projectFragment;
+            this.layoutInflater = (LayoutInflater) projectFragment.getLayoutInflater();
+        }
+
+        @Override
+        public int getCount() {
+            return imageProject.length;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+
+            if (view == null) {
+                view = layoutInflater.inflate(R.layout.list_project, viewGroup, false);
+            }
+
+            TextView txtNamaProject = view.findViewById(R.id.txt_nama_project);
+            ImageView imgProject = view.findViewById(R.id.img_project);
+            int dtlProject;
+
+            txtNamaProject.setText(namaProject[i]);
+            imgProject.setImageResource(imageProject[i]);
+            dtlProject = (detailProject[i]);
+
+            return view;
+        }
     }
 }

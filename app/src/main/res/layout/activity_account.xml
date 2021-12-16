@@ -186,7 +186,19 @@
                     android:textAlignment="gravity"
                     android:textSize="15sp"
                     android:textColor="@android:color/white"
-                    android:text="SIMPAN"
+                    android:text="simpan"
+                    android:background="@drawable/button_view_profile_background"
+                    android:onClick="onClick"
+                    />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textAlignment="gravity"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/white"
+                    android:text="log out"
                     android:background="@drawable/button_view_profile_background"
                     android:onClick="onClick"
                     />
