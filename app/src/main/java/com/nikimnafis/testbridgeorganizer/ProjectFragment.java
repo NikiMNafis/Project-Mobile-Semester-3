@@ -1,6 +1,7 @@
 package com.nikimnafis.testbridgeorganizer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.material.imageview.ShapeableImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,6 +85,21 @@ public class ProjectFragment extends Fragment {
 
         gridView.setAdapter(customAdapter);
 
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedName = namaProject[i];
+                int selectedImage = imageProject[i];
+                int selectedDetail = detailProject[i];
+
+                Intent intent = new Intent(getActivity(), DetailProjectActivity.class);
+                intent.putExtra("nama", selectedName);
+                intent.putExtra("image", selectedImage);
+                intent.putExtra("detail", selectedDetail);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -132,7 +150,7 @@ public class ProjectFragment extends Fragment {
             }
 
             TextView txtNamaProject = view.findViewById(R.id.txt_nama_project);
-            ImageView imgProject = view.findViewById(R.id.img_project);
+            ShapeableImageView imgProject = view.findViewById(R.id.img_project);
             int dtlProject;
 
             txtNamaProject.setText(namaProject[i]);

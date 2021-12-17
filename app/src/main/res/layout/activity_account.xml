@@ -27,7 +27,7 @@
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:text="Akun anda"
-                android:textSize="24dp"
+                android:textSize="20dp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/lato_bold"
                 android:layout_marginTop="80dp"
@@ -187,6 +187,18 @@
                     android:textSize="15sp"
                     android:textColor="@android:color/white"
                     android:text="simpan"
+                    android:background="@drawable/button_view_profile_background"
+                    android:onClick="onClick"
+                    />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textAlignment="gravity"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/white"
+                    android:text="hapus akun"
                     android:background="@drawable/button_view_profile_background"
                     android:onClick="onClick"
                     />

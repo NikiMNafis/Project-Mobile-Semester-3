@@ -9,9 +9,10 @@
     android:background="@drawable/round_corner_background"
     >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <TextView
             android:id="@+id/txt_1"
             android:layout_width="match_parent"
@@ -23,17 +24,18 @@
             android:layout_marginTop="5dp"
             android:paddingLeft="15dp"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recViewPriceList"
+        <GridView
+            android:id="@+id/gridViewPriceList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/txt_1"
             android:padding="15dp"
-            android:outlineSpotShadowColor="@android:color/transparent"
-            android:outlineAmbientShadowColor="@android:color/transparent"
+            android:numColumns="2"
+            android:horizontalSpacing="4dp"
+            android:verticalSpacing="4dp"
             />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </FrameLayout>
