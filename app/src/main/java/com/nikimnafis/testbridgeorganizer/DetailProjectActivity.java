@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +18,8 @@ public class DetailProjectActivity extends AppCompatActivity {
 //    ImageView imageDetailProject;
     TextView txtNamaProject, txtDetailProject;
 
+    ImageButton btnBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +28,15 @@ public class DetailProjectActivity extends AppCompatActivity {
         imageDetailProject = findViewById(R.id.img_detail_project);
         txtNamaProject = findViewById(R.id.txt_nama_project);
         txtDetailProject = findViewById(R.id.txt_detail_project);
+
+        btnBack = findViewById(R.id.btn_back);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(DetailProjectActivity.this, MainActivity.class));
+            }
+        });
 
         Intent intent = getIntent();
 
@@ -39,6 +51,4 @@ public class DetailProjectActivity extends AppCompatActivity {
         }
     }
 
-    public void onClick(View view) {
-    }
 }

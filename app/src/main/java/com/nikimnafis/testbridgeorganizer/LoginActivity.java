@@ -43,8 +43,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private String userID;
 
-    SharedPreferences sharedPreferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_masuk:
                 userLogin();
+                preferences.setDataLogin(LoginActivity.this, true);
 //                userData();
 
 //                String email = inputEmail.getEditableText().toString().trim();
@@ -174,9 +173,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     String noTelpUser = userProfile.noTelp;
                     String emailUser = userProfile.email;
 
+                    preferences.setDataLogin(LoginActivity.this, true);
+
                     SharedPreferences sharedPreferences = getSharedPreferences("logindata", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("loginstatus", true);
+                    editor.putString("iduser", userID);
                     editor.putString("namauser", namaUser);
                     editor.putString("notelpuser", noTelpUser);
                     editor.putString("emailuser", emailUser);
@@ -218,5 +219,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (preferences.getDataLogin(this)) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
+    }
 }

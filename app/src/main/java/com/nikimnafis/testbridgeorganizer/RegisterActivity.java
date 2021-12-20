@@ -122,7 +122,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btn_daftar:
                 userRegister();
-                UserData();
+//                UserData();
 
 //                startActivity(new Intent(this, LoginActivity.class));
                 break;
@@ -170,18 +170,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 });
     }
 
-    private void UserData() {
-        String nama = inputNama.getEditableText().toString().trim();
-        String noTelp = inputNoTelp.getEditableText().toString().trim();
-        String email = inputEmail.getEditableText().toString().trim();
-        String password = inputPassword.getEditableText().toString().trim();
-
-        rootNode = FirebaseDatabase.getInstance();
-        reference = rootNode.getReference("user");
-
-        UserHelper helperClass = new UserHelper(nama, noTelp, email, password);
-        reference.child(password).setValue(helperClass);
-    }
+//    private void UserData() {
+//        String nama = inputNama.getEditableText().toString().trim();
+//        String noTelp = inputNoTelp.getEditableText().toString().trim();
+//        String email = inputEmail.getEditableText().toString().trim();
+//        String password = inputPassword.getEditableText().toString().trim();
+//
+//        rootNode = FirebaseDatabase.getInstance();
+//        reference = rootNode.getReference("user");
+//
+//        UserHelper helperClass = new UserHelper(nama, noTelp, email, password);
+//        reference.child(password).setValue(helperClass);
+//    }
 
 
     // Validasi Input Data

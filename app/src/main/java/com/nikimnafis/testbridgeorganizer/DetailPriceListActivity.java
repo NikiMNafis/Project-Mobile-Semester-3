@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +18,8 @@ public class DetailPriceListActivity extends AppCompatActivity {
 //    ImageView imageDetailPaket;
     TextView txtNamaPaket, txtDetailPaket, txtHargaPaket;
 
+    ImageButton btnBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +29,15 @@ public class DetailPriceListActivity extends AppCompatActivity {
         txtNamaPaket = findViewById(R.id.txt_nama_paket);
         txtDetailPaket = findViewById(R.id.txt_detail_paket);
         txtHargaPaket = findViewById(R.id.txt_harga_paket);
+
+        btnBack = findViewById(R.id.btn_back);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(DetailPriceListActivity.this, MainActivity.class));
+            }
+        });
 
         Intent intent = getIntent();
 

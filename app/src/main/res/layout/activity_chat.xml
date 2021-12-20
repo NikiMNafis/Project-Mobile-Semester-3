@@ -30,7 +30,7 @@
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:text="Hubungi Kami"
-                android:textSize="28sp"
+                android:textSize="24sp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/lato_bold"
                 android:layout_marginTop="80dp"
@@ -40,24 +40,24 @@
                 android:id="@+id/text2"
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
-                android:text="Hubungi kami untuk order jasa/info lebih lanjut"
+                android:text="Hubungi kami via WhatsApp untuk order jasa/info lebih lanjut"
                 android:textSize="18dp"
                 android:textColor="@color/black"
                 android:layout_below="@+id/text1"
                 android:fontFamily="@font/lato_regular"
                 />
 
-        <!--Edit Text Email-->
+        <!--Edit Text Message-->
             <EditText
-                android:id="@+id/inp_chat"
+                android:id="@+id/inp_message"
                 android:inputType="textMultiLine"
                 android:layout_width="320dp"
                 android:layout_height="100dp"
-                android:padding="5dp"
+                android:padding="8dp"
                 android:maxLines="10"
                 android:gravity="top"
                 android:textSize="16sp"
-                android:background="@drawable/custom_input"
+                android:background="@drawable/custom_input_message"
                 android:hint="Isi pesan"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray"
