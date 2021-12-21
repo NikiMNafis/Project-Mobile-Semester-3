@@ -3,7 +3,6 @@ package com.nikimnafis.testbridgeorganizer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
@@ -42,6 +40,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private DatabaseReference reference;
 
     private String userID;
+
+    private SharedPreferences sharedPreferences;
+
+    private static final String USER_DATA = "userdata";
+    private static final String NAMA_USER = "nama";
+    private static final String NOTELP_USER = "notelp";
+    private static final String EMAIL_USER = "email";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_masuk:
                 userLogin();
-                preferences.setDataLogin(LoginActivity.this, true);
+
 //                userData();
 
 //                String email = inputEmail.getEditableText().toString().trim();
@@ -132,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                });
                 break;
             case R.id.btn_lupa_pass:
-                startActivity(new Intent(this, LupaPasswordActivity.class));
+                startActivity(new Intent(this, ForgotPasswordActivity.class));
                 break;
         }
     }
@@ -150,6 +155,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    preferences.setDataLogin(LoginActivity.this, true);
+                    userData();
                     Toast.makeText(LoginActivity.this, "Login berhasil", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(LoginActivity.this, "Gagal login, email atau password salah", Toast.LENGTH_SHORT).show();
@@ -165,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserRegister userProfile = snapshot.getValue(UserRegister.class);
 
                 if (userProfile != null) {
@@ -173,17 +180,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     String noTelpUser = userProfile.noTelp;
                     String emailUser = userProfile.email;
 
-                    preferences.setDataLogin(LoginActivity.this, true);
+                    sharedPreferences = getSharedPreferences(USER_DATA, MODE_PRIVATE);
 
-                    SharedPreferences sharedPreferences = getSharedPreferences("logindata", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("iduser", userID);
-                    editor.putString("namauser", namaUser);
-                    editor.putString("notelpuser", noTelpUser);
-                    editor.putString("emailuser", emailUser);
-                    editor.commit();
+                    editor.putString(NAMA_USER, namaUser);
+                    editor.putString(NOTELP_USER, noTelpUser);
+                    editor.putString(EMAIL_USER, emailUser);
                     editor.apply();
-                    finish();
                 }
             }
 

@@ -1,6 +1,8 @@
 package com.nikimnafis.testbridgeorganizer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -43,6 +45,13 @@ public class ProfileFragment extends Fragment {
     private DatabaseReference reference;
 
     private String userID;
+
+    private SharedPreferences sharedPreferences;
+
+    private static final String USER_DATA = "userdata";
+    private static final String NAMA_USER = "nama";
+    private static final String NOTELP_USER = "notelp";
+    private static final String EMAIL_USER = "email";
 
     TextView txtNamaUser, txtEmailUser;
 
@@ -107,6 +116,17 @@ public class ProfileFragment extends Fragment {
         txtNamaUser = view.findViewById(R.id.txt_nama_user);
         txtEmailUser = view.findViewById(R.id.txt_email_user);
 
+        // Set profile menggunakan share preference
+//        sharedPreferences = this.getActivity().getSharedPreferences(USER_DATA, Context.MODE_PRIVATE);
+//
+//        String namaUser = sharedPreferences.getString(NAMA_USER, null);
+//        String emailUser = sharedPreferences.getString(EMAIL_USER, null);
+//
+//        if (namaUser != null || emailUser != null) {
+//            txtNamaUser.setText(namaUser);
+//            txtEmailUser.setText(emailUser);
+//        }
+        // Set profile menggunakan firebase auth
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("users");
         userID = user.getUid();
@@ -127,7 +147,7 @@ public class ProfileFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });

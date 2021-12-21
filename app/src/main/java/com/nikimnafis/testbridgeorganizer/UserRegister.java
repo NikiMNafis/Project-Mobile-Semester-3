@@ -12,4 +12,5 @@ public class UserRegister {
         this.noTelp = noTelp;
         this.email = email;
     }
+
 }
