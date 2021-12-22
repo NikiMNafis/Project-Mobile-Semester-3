@@ -1,6 +1,8 @@
 package com.nikimnafis.testbridgeorganizer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,14 +12,29 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import org.jetbrains.annotations.NotNull;
 
 public class ChangePasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageButton btnBack;
+    private AppCompatButton btnChangePass;
+    private TextView btnForgotPass;
 
-    private EditText txtOldPass, txtNewPass, txtRNewPass;
+    private EditText txtNewPass, txtRNewPass;
 
     private boolean passwordVisible;
+
+    FirebaseAuth auth;
+    FirebaseUser user;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,40 +42,16 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_change_password);
 
         btnBack = findViewById(R.id.btn_back);
-        txtOldPass = findViewById(R.id.inp_old_pass);
+        btnChangePass = findViewById(R.id.btn_change_pass);
+        btnForgotPass = findViewById(R.id.btn_forgot_pass);
+
         txtNewPass = findViewById(R.id.inp_new_pass);
         txtRNewPass = findViewById(R.id.inp_new_pass2);
 
 
         btnBack.setOnClickListener(this);
-
-        txtOldPass.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                final int Right = 2;
-                if (event.getAction()==MotionEvent.ACTION_UP) {
-                    if (event.getRawX()>=txtOldPass.getRight()-txtOldPass.getCompoundDrawables()[Right].getBounds().width()) {
-                        int selection = txtOldPass.getSelectionEnd();
-                        if (passwordVisible) {
-                            // set gambar
-                            txtOldPass.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_baseline_visibility_24, 0);
-                            // menyembunyikan password
-                            txtOldPass.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                            passwordVisible=false;
-                        } else {
-                            // set gambar
-                            txtOldPass.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_baseline_visibility_off_24, 0);
-                            // menyembunyikan password
-                            txtOldPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                            passwordVisible=true;
-                        }
-                        txtOldPass.setSelection(selection);
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
+        btnChangePass.setOnClickListener(this);
+        btnForgotPass.setOnClickListener(this);
 
         txtNewPass.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -123,6 +116,73 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
             case R.id.btn_back:
                 startActivity(new Intent(this, MainActivity.class));
                 break;
+            case R.id.btn_change_pass:
+                changePassword();
+                break;
         }
     }
+
+    private void changePassword() {
+        if (!validasiPassword() | !validasiUlangPassword()) {
+            return;
+        }
+
+        auth = FirebaseAuth.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        String newPass = txtRNewPass.getText().toString();
+
+        user.updatePassword(newPass).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(ChangePasswordActivity.this, "Berhasil mengubah kata sandi", Toast.LENGTH_SHORT);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ChangePasswordActivity.this, "Gagal mengubah kata sandi", Toast.LENGTH_SHORT);
+            }
+        });
+
+    }
+
+    public Boolean validasiPassword() {
+        String val = txtNewPass.getEditableText().toString();
+        String passVal = "^" +
+//                "(?=.*[0-9])" + //setidaknya 1 digit angka
+//                "(?=.*[a-z])" + //setidaknya 1 huruf kecil
+//                "(?=.*[A-Z])" + //setidaknya 1 huruf besar
+                "(?=.*[a-zA-Z])" + //semua kerakter
+                "(?=.*[@#$%^&+=])" + //setidaknya 1 spesial karakter
+                "(?=\\s+$)" + //no white space
+                ".{4,}" + //setidaknya 4 karakter
+                "$";
+
+        if (val.isEmpty()) {
+            txtNewPass.setError("Form harus diisi");
+            return false;
+        } else if (val.length()<=8) {
+            txtNewPass.setError("Password terlalu lemah");
+            return false;
+        } else {
+            txtNewPass.setError(null);
+            return true;
+        }
+    }
+    public Boolean validasiUlangPassword() {
+        String val = txtRNewPass.getEditableText().toString();
+        String val2 = txtNewPass.getEditableText().toString();
+
+        if (val.isEmpty()) {
+            txtRNewPass.setError("Form harus diisi");
+            return false;
+        } else if (!val.equals(val2)) {
+            txtRNewPass.setError("Kata sandi tidak sama");
+            return false;
+        } else {
+            txtRNewPass.setError(null);
+            return true;
+        }
+    }
+
 }

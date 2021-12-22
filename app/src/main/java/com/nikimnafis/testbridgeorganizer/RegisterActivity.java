@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText inputNama, inputNoTelp, inputEmail, inputPassword, inputUlangPassword;
     boolean passwordVisible;
     private ImageButton buttonBack, buttonDaftar;
+    private TextView btnRegisterGoogle;
 
     private FirebaseDatabase rootNode;
     private DatabaseReference reference;
@@ -45,6 +47,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         buttonBack = findViewById(R.id.btn_back);
         buttonDaftar = findViewById(R.id.btn_daftar);
+        btnRegisterGoogle = findViewById(R.id.btn_daftar_google);
 
         inputNama = findViewById(R.id.inp_nama);
         inputNoTelp = findViewById(R.id.inp_no_telp);
@@ -54,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         buttonBack.setOnClickListener(this);
         buttonDaftar.setOnClickListener(this);
+        btnRegisterGoogle.setOnClickListener(this);
 
         inputPassword.setOnTouchListener(new View.OnTouchListener() {
             @Override
