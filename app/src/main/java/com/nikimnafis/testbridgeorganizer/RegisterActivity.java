@@ -15,25 +15,20 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText inputNama, inputNoTelp, inputEmail, inputPassword, inputUlangPassword;
     boolean passwordVisible;
     private ImageButton buttonBack, buttonDaftar;
-    private TextView btnRegisterGoogle;
 
     private FirebaseDatabase rootNode;
     private DatabaseReference reference;
@@ -47,7 +42,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         buttonBack = findViewById(R.id.btn_back);
         buttonDaftar = findViewById(R.id.btn_daftar);
-        btnRegisterGoogle = findViewById(R.id.btn_daftar_google);
 
         inputNama = findViewById(R.id.inp_nama);
         inputNoTelp = findViewById(R.id.inp_no_telp);
@@ -57,7 +51,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         buttonBack.setOnClickListener(this);
         buttonDaftar.setOnClickListener(this);
-        btnRegisterGoogle.setOnClickListener(this);
 
         inputPassword.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -128,7 +121,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 userRegister();
 //                UserData();
 
-//                startActivity(new Intent(this, LoginActivity.class));
                 break;
         }
     }

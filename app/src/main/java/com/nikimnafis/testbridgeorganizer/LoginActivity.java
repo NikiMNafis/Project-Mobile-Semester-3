@@ -15,11 +15,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private EditText inputEmail, inputPassword;
     boolean passwordVisible;
-    private TextView buttonDaftar, buttonLupaPassword;
+    private TextView buttonDaftar, buttonMasukGoogle, buttonLupaPassword;
     private ImageButton buttonMasuk;
 
     private FirebaseAuth mAuth;
@@ -43,10 +50,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private SharedPreferences sharedPreferences;
 
+    private GoogleSignInClient mGoogleSignInClient;
+    private final static int RC_SIGN_IN = 123;
+
     private static final String USER_DATA = "userdata";
     private static final String NAMA_USER = "nama";
     private static final String NOTELP_USER = "notelp";
     private static final String EMAIL_USER = "email";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +72,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         buttonDaftar = findViewById(R.id.btn_daftar);
         buttonMasuk = findViewById(R.id.btn_masuk);
+        buttonMasukGoogle = findViewById(R.id.btn_masuk_google);
         buttonLupaPassword = findViewById(R.id.btn_lupa_pass);
 
         buttonDaftar.setOnClickListener(this);
         buttonMasuk.setOnClickListener(this);
+        buttonMasukGoogle.setOnClickListener(this);
         buttonLupaPassword.setOnClickListener(this);
 
         inputPassword.setOnTouchListener(new View.OnTouchListener() {
@@ -93,8 +107,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 return false;
             }
         });
-    }
 
+//        createRequest();
+    }
 
     public void onClick(View view) {
         int id = view.getId();
@@ -105,7 +120,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_masuk:
                 userLogin();
-
 //                userData();
 
 //                String email = inputEmail.getEditableText().toString().trim();
@@ -135,6 +149,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                        Toast.makeText(LoginActivity.this, "Database error", Toast.LENGTH_SHORT).show();
 //                    }
 //                });
+                break;
+            case R.id.btn_masuk_google:
+//                signIn();
                 break;
             case R.id.btn_lupa_pass:
                 startActivity(new Intent(this, ForgotPasswordActivity.class));
@@ -196,6 +213,57 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+    }
+
+    private void createRequest() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
+
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account.getIdToken());
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(LoginActivity.this, "Login gagal", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     //    Validasi input data

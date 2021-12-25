@@ -15,8 +15,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -132,18 +134,16 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
 
         String newPass = txtRNewPass.getText().toString();
 
-        user.updatePassword(newPass).addOnSuccessListener(new OnSuccessListener<Void>() {
+        user.updatePassword(newPass).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(ChangePasswordActivity.this, "Berhasil mengubah kata sandi", Toast.LENGTH_SHORT);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ChangePasswordActivity.this, "Gagal mengubah kata sandi", Toast.LENGTH_SHORT);
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(ChangePasswordActivity.this, "Berhasil mengubah kata sandi", Toast.LENGTH_SHORT);
+                } else {
+                    Toast.makeText(ChangePasswordActivity.this, "Gagal mengubah kata sandi", Toast.LENGTH_SHORT);
+                }
             }
         });
-
     }
 
     public Boolean validasiPassword() {

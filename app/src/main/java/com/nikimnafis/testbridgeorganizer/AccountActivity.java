@@ -1,11 +1,14 @@
 package com.nikimnafis.testbridgeorganizer;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +51,8 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     private static final String NAMA_USER = "nama";
     private static final String NOTELP_USER = "notelp";
     private static final String EMAIL_USER = "email";
+
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +112,10 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(AccountActivity.this, "Database error", Toast.LENGTH_SHORT).show();
             }
         });
+
+        builder = new AlertDialog.Builder(this);
+
+        auth = FirebaseAuth.getInstance();
     }
 
     public void onClick(View view) {
@@ -117,11 +128,14 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.btn_log_out:
                 startActivity(new Intent(AccountActivity.this, LoginActivity.class));
                 FirebaseAuth.getInstance().signOut();
-                preferences.clearData(this);
+                preferences.clearData(AccountActivity.this);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
                 editor.commit();
                 finish();
+                break;
+            case R.id.btn_delete_account:
+                deleteAccount();
                 break;
             case R.id.btn_update_profil:
                 updateProfil();
@@ -130,6 +144,10 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void updateProfil() {
+        if (!validasiNama() | !validasiNoTelp() | !validasiEmail()) {
+            return;
+        }
+
         String nama = edtNama.getEditableText().toString().trim();
         String noTelp = edtNoTelp.getEditableText().toString().trim();
         String email = edtEmail.getEditableText().toString().trim();
@@ -158,6 +176,92 @@ public class AccountActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         });
+    }
+
+    public void deleteAccount() {
+        builder.setTitle("Hapus akun")
+                .setMessage("Hapus akun secara permanen?")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        FirebaseDatabase.getInstance().getReference().child("users")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+
+                                    FirebaseUser user = auth.getCurrentUser();
+                                    user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Intent intent = new Intent(AccountActivity.this, LoginActivity.class);
+                                                startActivity(intent);
+
+                                                Toast.makeText(AccountActivity.this, "Akun berhasil dihapus", Toast.LENGTH_SHORT).show();
+                                                auth.signOut();
+                                                preferences.clearData(AccountActivity.this);
+                                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                editor.clear();
+                                                editor.commit();
+                                                finish();
+                                            } else {
+                                                Toast.makeText(AccountActivity.this, "Akun gagal dihapus", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(AccountActivity.this, "Akun gagal dihapus", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                    }
+                }).setNegativeButton("Cancel", null)
+                .create().show();
+    }
+
+    // Validasi Input Data
+    public Boolean validasiNama() {
+        String val = edtNama.getEditableText().toString();
+
+        if (val.isEmpty()) {
+            edtNama.setError("Form harus diisi");
+            return false;
+        } else {
+            edtNama.setError(null);
+            return true;
+        }
+    }
+    public Boolean validasiNoTelp() {
+        String val = edtNoTelp.getEditableText().toString();
+
+        if (val.isEmpty()) {
+            edtNoTelp.setError("Form harus diisi");
+            return false;
+        } else if (val.length()<=10){
+            edtNoTelp.setError("Nomor telepon salah");
+            return false;
+        } else {
+            edtNoTelp.setError(null);
+            return true;
+        }
+    }
+    public Boolean validasiEmail() {
+        String val = edtEmail.getEditableText().toString();
+//        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+        if (val.isEmpty()) {
+            edtEmail.setError("Form harus diisi");
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(val).matches()) {
+            edtEmail.setError("Alamat email salah");
+            return false;
+        } else {
+            edtEmail.setError(null);
+            return true;
+        }
     }
 
 }
