@@ -85,6 +85,7 @@
                 />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_social_media"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -100,6 +101,7 @@
                 />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
