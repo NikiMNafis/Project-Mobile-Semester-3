@@ -85,7 +85,7 @@
                 />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_social_media"
+                android:id="@+id/btn_media_sosial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -94,7 +94,7 @@
                 android:padding="16dp"
                 android:textSize="15sp"
                 android:textColor="@android:color/black"
-                android:text="Sosial Media Kami"
+                android:text="Media Sosial Kami"
                 android:background="@drawable/button_profile_background"
                 android:textAllCaps="false"
                 android:drawableRight="@drawable/next_24"
