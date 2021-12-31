@@ -13,7 +13,7 @@ public class MediaSosialActivity extends AppCompatActivity implements View.OnCli
 
     ImageButton btnBack;
 
-    RelativeLayout btnInstagram, btnFacebook, btnTwitter;
+    RelativeLayout btnInstagram, btnFacebook, btnTiktok;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +24,12 @@ public class MediaSosialActivity extends AppCompatActivity implements View.OnCli
 
         btnInstagram = findViewById(R.id.btn_instagram);
         btnFacebook = findViewById(R.id.btn_facebook);
-        btnTwitter = findViewById(R.id.btn_twitter);
+        btnTiktok = findViewById(R.id.btn_tiktok);
 
         btnBack.setOnClickListener(this);
         btnInstagram.setOnClickListener(this);
         btnFacebook.setOnClickListener(this);
-        btnTwitter.setOnClickListener(this);
+        btnTiktok.setOnClickListener(this);
     }
 
     @Override
@@ -41,15 +41,15 @@ public class MediaSosialActivity extends AppCompatActivity implements View.OnCli
                 startActivity(new Intent(this,MainActivity.class));
                 break;
             case R.id.btn_instagram:
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/aliimrnsf/?utm_medium=copy_link"));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/bridgeorganizer__/"));
                 startActivity(intent);
                 break;
             case R.id.btn_facebook:
-                Intent intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/niki_nafis23/?utm_medium=copy_link"));
+                Intent intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/bridgeorganizer__/"));
                 startActivity(intent2);
                 break;
-            case R.id.btn_twitter:
-                Intent intent3 = new Intent(Intent.ACTION_VIEW, Uri.parse("https://instagram.com/haekiyo?utm_medium=copy_link"));
+            case R.id.btn_tiktok:
+                Intent intent3 = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.tiktok.com/@bridgeorganizer?"));
                 startActivity(intent3);
                 break;
         }

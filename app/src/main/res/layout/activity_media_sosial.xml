@@ -112,7 +112,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/btn_twitter"
+                    android:id="@+id/btn_tiktok"
                     android:layout_width="match_parent"
                     android:layout_height="75dp"
                     android:background="@drawable/button_media_sosial_background"
@@ -123,7 +123,7 @@
                         android:id="@+id/twitter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Twitter"
+                        android:text="TikTok"
                         android:textSize="18dp"
                         android:textColor="@color/black"
                         android:fontFamily="@font/lato_bold"
