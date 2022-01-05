@@ -34,15 +34,12 @@ public class PriceListFragment extends Fragment {
 
     GridView gridView;
 
-    String[] namaPaket = {"Paket Exclusive", "Paket Diamond", "Paket 1", "Paket 2",
-            "Paket 3", "Paket 4"};
+    String[] namaPaket = {"Engagement", "Pre-Wedding", "Akad/Reception", "Wedding Day",
+            "Diamond", "Exclusive", "Additional Charge"};
     int[] imagePaket = {R.drawable.eventparty, R.drawable.graduation, R.drawable.schoolparty, R.drawable.weddingstage,
-            R.drawable.eventparty, R.drawable.graduation};
-    int[] detailPaket = {R.string.lorem, R.string.lorem, R.string.lorem, R.string.lorem,
-            R.string.lorem, R.string.lorem};
-    String[] hargaPaket = {"Paket Exclusive : Rp 20.000.000,00", "Paket Diamond : Rp 17.500.000,00",
-            "Paket 1 : Rp 15.000.000,00", "Paket 2 : Rp 14.000.000,00", "Paket 3 : Rp 12.500.000,00",
-            "Paket 4 : Rp 8.000.000,00"};
+            R.drawable.eventparty, R.drawable.graduation, R.drawable.weddingstage};
+    int[] detailPaket = {R.string.pl_engagement, R.string.pl_pre_wedding, R.string.pl_akad, R.string.pl_wedding_day,
+            R.string.pl_diamond, R.string.pl_exclusive, R.string.pl_additional_charge};
 
     public PriceListFragment() {
         // Required empty public constructor
@@ -83,7 +80,7 @@ public class PriceListFragment extends Fragment {
 
         gridView = view.findViewById(R.id.gridViewPriceList);
 
-        PriceListFragment.CustomAdapter customAdapter = new PriceListFragment.CustomAdapter(namaPaket, imagePaket, detailPaket, hargaPaket, this);
+        PriceListFragment.CustomAdapter customAdapter = new PriceListFragment.CustomAdapter(namaPaket, imagePaket, detailPaket, this);
 
         gridView.setAdapter(customAdapter);
 
@@ -93,13 +90,11 @@ public class PriceListFragment extends Fragment {
                 String selectedName = namaPaket[i];
                 int selectedImage = imagePaket[i];
                 int selectedDetail = detailPaket[i];
-                String selectedHarga = hargaPaket[i];
 
                 Intent intent = new Intent(getActivity(), DetailPriceListActivity.class);
                 intent.putExtra("nama", selectedName);
                 intent.putExtra("image", selectedImage);
                 intent.putExtra("detail", selectedDetail);
-                intent.putExtra("harga", selectedHarga);
                 startActivity(intent);
             }
         });
@@ -112,15 +107,13 @@ public class PriceListFragment extends Fragment {
         private String[] namaPaket;
         private int[] imagePaket;
         private int[] detailPaket;
-        private String[] hargaPaket;
         private LayoutInflater layoutInflater;
         private PriceListFragment priceListFragment;
 
-        public CustomAdapter(String[] namaPaket, int[] imagePaket, int[] detailPaket, String[] hargaPaket, PriceListFragment priceListFragment) {
+        public CustomAdapter(String[] namaPaket, int[] imagePaket, int[] detailPaket, PriceListFragment priceListFragment) {
             this.namaPaket = namaPaket;
             this.imagePaket = imagePaket;
             this.detailPaket = detailPaket;
-            this.hargaPaket = hargaPaket;
             this.priceListFragment = priceListFragment;
             this.layoutInflater = (LayoutInflater) priceListFragment.getLayoutInflater();
         }
@@ -150,12 +143,10 @@ public class PriceListFragment extends Fragment {
             TextView txtNamaPaket = view.findViewById(R.id.txt_nama_paket);
             ShapeableImageView imgPaket = view.findViewById(R.id.img_paket);
             int dtlPaket;
-            String hrgPaket;
 
             txtNamaPaket.setText(namaPaket[i]);
             imgPaket.setImageResource(imagePaket[i]);
             dtlPaket = (detailPaket[i]);
-            hrgPaket = (hargaPaket[i]);
 
             return view;
         }

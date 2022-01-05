@@ -16,7 +16,7 @@ public class DetailPriceListActivity extends AppCompatActivity {
     ShapeableImageView imageDetailPaket;
 
 //    ImageView imageDetailPaket;
-    TextView txtNamaPaket, txtDetailPaket, txtHargaPaket;
+    TextView txtNamaPaket, txtDetailPaket;
 
     ImageButton btnBack;
 
@@ -28,7 +28,6 @@ public class DetailPriceListActivity extends AppCompatActivity {
         imageDetailPaket = findViewById(R.id.img_detail_paket);
         txtNamaPaket = findViewById(R.id.txt_nama_paket);
         txtDetailPaket = findViewById(R.id.txt_detail_paket);
-        txtHargaPaket = findViewById(R.id.txt_harga_paket);
 
         btnBack = findViewById(R.id.btn_back);
 
@@ -45,12 +44,10 @@ public class DetailPriceListActivity extends AppCompatActivity {
             String selectedName = intent.getStringExtra("nama");
             int selectedImage = intent.getIntExtra("image", 0);
             int selectedDetail = intent.getIntExtra("detail", 0);
-            String selectedHarga = intent.getStringExtra("harga");
 
             txtNamaPaket.setText(selectedName);
             imageDetailPaket.setImageResource(selectedImage);
             txtDetailPaket.setText(selectedDetail);
-            txtHargaPaket.setText(selectedHarga);
         }
     }
 
