@@ -36,8 +36,8 @@ public class PriceListFragment extends Fragment {
 
     String[] namaPaket = {"Engagement", "Pre-Wedding", "Akad/Reception", "Wedding Day",
             "Diamond", "Exclusive", "Additional Charge"};
-    int[] imagePaket = {R.drawable.eventparty, R.drawable.graduation, R.drawable.schoolparty, R.drawable.weddingstage,
-            R.drawable.eventparty, R.drawable.graduation, R.drawable.weddingstage};
+    int[] imagePaket = {R.drawable.engagement, R.drawable.pre_wedding, R.drawable.reception, R.drawable.wedding_day,
+            R.drawable.diamond, R.drawable.exclusive, R.drawable.additional_charge};
     int[] detailPaket = {R.string.pl_engagement, R.string.pl_pre_wedding, R.string.pl_akad, R.string.pl_wedding_day,
             R.string.pl_diamond, R.string.pl_exclusive, R.string.pl_additional_charge};
 

@@ -84,34 +84,6 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/btn_facebook"
-                    android:layout_width="match_parent"
-                    android:layout_height="75dp"
-                    android:background="@drawable/button_media_sosial_background"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/facebook"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Facebook"
-                        android:textSize="18dp"
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/lato_bold"
-                        android:layout_marginTop="14dp"
-                        android:layout_marginRight="40dp"
-                        />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/facebook"
-                        android:layout_toRightOf="@+id/facebook"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
                     android:id="@+id/btn_tiktok"
                     android:layout_width="match_parent"
                     android:layout_height="75dp"

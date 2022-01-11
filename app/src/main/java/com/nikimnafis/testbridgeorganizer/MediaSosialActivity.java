@@ -13,7 +13,7 @@ public class MediaSosialActivity extends AppCompatActivity implements View.OnCli
 
     ImageButton btnBack;
 
-    RelativeLayout btnInstagram, btnFacebook, btnTiktok;
+    RelativeLayout btnInstagram, btnTiktok;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +23,10 @@ public class MediaSosialActivity extends AppCompatActivity implements View.OnCli
         btnBack = findViewById(R.id.btn_back);
 
         btnInstagram = findViewById(R.id.btn_instagram);
-        btnFacebook = findViewById(R.id.btn_facebook);
         btnTiktok = findViewById(R.id.btn_tiktok);
 
         btnBack.setOnClickListener(this);
         btnInstagram.setOnClickListener(this);
-        btnFacebook.setOnClickListener(this);
         btnTiktok.setOnClickListener(this);
     }
 
@@ -43,10 +41,6 @@ public class MediaSosialActivity extends AppCompatActivity implements View.OnCli
             case R.id.btn_instagram:
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/bridgeorganizer__/"));
                 startActivity(intent);
-                break;
-            case R.id.btn_facebook:
-                Intent intent2 = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/bridgeorganizer__/"));
-                startActivity(intent2);
                 break;
             case R.id.btn_tiktok:
                 Intent intent3 = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.tiktok.com/@bridgeorganizer?"));
